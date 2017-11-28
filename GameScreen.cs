@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WinMan;
+﻿using WinMan;
 
 namespace Apprentice
 {
     class GameScreen : Screen
     {
-        public CameraPanel CameraPanel;
+        public CameraPanel MainCameraPanel;
 
-        public GameScreen()
+        public GameScreen(Map mapToRender)
         {
-            CameraPanel = new CameraPanel(SizeC(0), SizeC(0), WidthMinus(0), HeightMinus(0));
+            MainCameraPanel = new CameraPanel(SizeC(0), SizeC(0), WidthMinus(0), HeightMinus(0), mapToRender);
 
-            addPanel(CameraPanel);
+            addPanel(MainCameraPanel);
         }
     }
 }

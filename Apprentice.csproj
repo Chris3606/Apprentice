@@ -56,8 +56,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraPanel.cs" />
+    <Compile Include="DemiPlane.cs" />
+    <Compile Include="GameObjects\Floor.cs" />
+    <Compile Include="GameObjects\GameObject.cs" />
+    <Compile Include="GameObjects\Wall.cs" />
     <Compile Include="GameScreen.cs" />
     <Compile Include="ApprenticeGame.cs" />
+    <Compile Include="GlobalKeyHandler.cs" />
+    <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

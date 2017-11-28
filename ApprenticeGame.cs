@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RLNET;
+﻿using RLNET;
 using WinMan;
 
 namespace Apprentice
 {
     class ApprenticeGame
     {
+        static public Map ActiveMap;
         static public GameScreen GameScreen;
+
+        static private KeyHandler globalKeyHandler; // handles global keys like fullscreen and exit
 
         static void Main()
         {
@@ -21,7 +19,7 @@ namespace Apprentice
                 CharHeight = 8,
                 Width = 80,
                 Height = 60,
-                ResizeType = RLResizeType.ResizeCells, // Display more on screen if the console gets bigger, dont just increase size of existing
+                ResizeType = RLResizeType.ResizeCells,    // Display more tiles on screen if the console gets bigger, dont just increase size of existing
                 Scale = 1f,
                 StartWindowState = RLWindowState.Normal,
                 WindowBorder = RLWindowBorder.Resizable,
@@ -30,7 +28,15 @@ namespace Apprentice
 
             Engine.Init(settings);
 
-            GameScreen = new GameScreen();
+            // Instantiate map -- this should go elsewhere later.
+            ActiveMap = new DemiPlane(Engine.RootConsole.Width, Engine.RootConsole.Height);
+
+            // Global key commands setup
+            globalKeyHandler = new GlobalKeyHandler();
+            globalKeyHandler.StartHandling();
+
+            // Main game screen setup
+            GameScreen = new GameScreen(ActiveMap);
             GameScreen.Show();
 
             Engine.Run();
