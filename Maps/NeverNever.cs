@@ -11,10 +11,9 @@ namespace Apprentice.Maps
         public Coord SpawnPoint { get; private set; }
         public NeverNever(int width, int height)
             : base(width, height)
-        {
-            Generate();
-        }
+        { }
 
+        // Use generate here for now, laoding can be implemented by another function later in place of generate.
         public sealed override void Generate()
         {
             var terrainGen = new ArrayMapOf<bool>(Width, Height);

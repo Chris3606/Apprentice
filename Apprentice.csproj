@@ -68,7 +68,7 @@
     <Compile Include="MainCameraPanel.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\NeverNever.cs" />
-    <Compile Include="NeverNeverGate.cs" />
+    <Compile Include="Gate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +76,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="terminal8x8.png">
+    <Content Include="font14x14.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

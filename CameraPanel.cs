@@ -58,23 +58,29 @@ namespace Apprentice
         {
             console.Clear();
 
-            // Render terrain
-            for (int x = cameraBounds.X; x <= cameraBounds.MaxX; x++)
-                for (int y = cameraBounds.Y; y <= cameraBounds.MaxY; y++)
-                    renderGameObject(_mapToRender.Terrain[x, y], x - cameraBounds.X, y - cameraBounds.Y);
+            if (_mapToRender != null)
+            {
+                // Render terrain
+                for (int x = cameraBounds.X; x <= cameraBounds.MaxX; x++)
+                    for (int y = cameraBounds.Y; y <= cameraBounds.MaxY; y++)
+                        renderGameObject(_mapToRender.Terrain[x, y], x - cameraBounds.X, y - cameraBounds.Y);
 
-            // Render everything else
-            foreach (var gObject in _mapToRender.Entities.Items)
-                renderGameObject(gObject, gObject.Position.X - cameraBounds.X, gObject.Position.Y - cameraBounds.Y);
+                // Render everything else
+                foreach (var gObject in _mapToRender.Entities.Items)
+                    renderGameObject(gObject, gObject.Position.X - cameraBounds.X, gObject.Position.Y - cameraBounds.Y);
+            }
         }
 
         private void recalcActualPosition()
         {
-            cameraBounds.MinCorner = Coord.Get(Math.Max(Math.Min(Math.Max(0, _cameraPosition.X - (Width / 2)), MapToRender.Width - Width), 0),
-                                               Math.Max(Math.Min(Math.Max(0, _cameraPosition.Y - (Height / 2)), MapToRender.Height - Height), 0));
+            if (_mapToRender != null)
+            {
+                cameraBounds.MinCorner = Coord.Get(Math.Max(Math.Min(Math.Max(0, _cameraPosition.X - (Width / 2)), _mapToRender.Width - Width), 0),
+                                               Math.Max(Math.Min(Math.Max(0, _cameraPosition.Y - (Height / 2)), _mapToRender.Height - Height), 0));
 
-            cameraBounds.Width = Math.Min(MapToRender.Width, Width);
-            cameraBounds.Height = Math.Min(MapToRender.Height, Height);
+                cameraBounds.Width = Math.Min(_mapToRender.Width, Width);
+                cameraBounds.Height = Math.Min(_mapToRender.Height, Height);
+            }
         }
 
         private void renderGameObject(GameObject gObject, int consoleX, int consoleY)

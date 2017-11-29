@@ -7,9 +7,9 @@ namespace Apprentice
     {
         public CameraPanel MainCameraPanel;
 
-        public GameScreen(Map mapToRender)
+        public GameScreen()
         {
-            MainCameraPanel = new MainCameraPanel(SizeC(0), SizeC(0), WidthMinus(0), HeightMinus(0), mapToRender);
+            MainCameraPanel = new MainCameraPanel(SizeC(0), SizeC(0), WidthMinus(0), HeightMinus(0));
 
             addPanel(MainCameraPanel);
         }
