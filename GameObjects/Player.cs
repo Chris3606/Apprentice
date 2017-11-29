@@ -1,4 +1,5 @@
-﻿using GoRogue;
+﻿using Apprentice.Maps;
+using GoRogue;
 using RLNET;
 
 namespace Apprentice.GameObjects

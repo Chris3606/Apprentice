@@ -1,4 +1,5 @@
-﻿using GoRogue;
+﻿using Apprentice.Maps;
+using GoRogue;
 using RLNET;
 using System;
 
@@ -110,20 +111,21 @@ namespace Apprentice.GameObjects
             if (map == null)
                 return null;
 
-            // Terrain always blocks.
-            if (map.Terrain[position] != null && !map.Terrain[position].IsWalkable)
-                return map.Terrain[position];
+            // Get colliding object; if there is none we can't collide.
+            var collidingObject = map.CollidingObjectAt(position);
+            if (collidingObject == null)
+                return null;
 
-            // Otherwise it can't possibly collide if it's walkable.
+            // Terrain always collides
+            if (collidingObject.Layer == Map.Layer.Terrain)
+                return collidingObject;
+
+            // If we're walkable, we can't collide
             if (IsWalkable)
                 return null;
 
-            // If it isn't walkable, then it collides iff there is another colliding object already present.
-            foreach (var gObject in map.Entities.GetItems(position))
-                if (!gObject.IsWalkable)
-                    return gObject;
-
-            return null;
+            // If we're not walkable, that other entity must block us
+            return collidingObject;
         }
     }
 }

@@ -2,6 +2,7 @@
 using RLNET;
 using WinMan;
 using Apprentice.GameObjects;
+using Apprentice.Maps;
 using System;
 
 namespace Apprentice
@@ -72,8 +73,8 @@ namespace Apprentice
             cameraBounds.MinCorner = Coord.Get(Math.Max(Math.Min(Math.Max(0, _cameraPosition.X - (Width / 2)), MapToRender.Width - Width), 0),
                                                Math.Max(Math.Min(Math.Max(0, _cameraPosition.Y - (Height / 2)), MapToRender.Height - Height), 0));
 
-            cameraBounds.Width = Math.Min(MapToRender.Width, cameraBounds.X + Width);
-            cameraBounds.Height = Math.Min(MapToRender.Height, cameraBounds.Y + Height);
+            cameraBounds.Width = Math.Min(MapToRender.Width, Width);
+            cameraBounds.Height = Math.Min(MapToRender.Height, Height);
         }
 
         private void renderGameObject(GameObject gObject, int consoleX, int consoleY)

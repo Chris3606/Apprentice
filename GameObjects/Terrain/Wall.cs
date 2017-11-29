@@ -1,4 +1,5 @@
-﻿using RLNET;
+﻿using Apprentice.Maps;
+using RLNET;
 using GoRogue;
 
 namespace Apprentice.GameObjects.Terrain

@@ -1,7 +1,8 @@
 ﻿using GoRogue;
+using GoRogue.Random;
 using Apprentice.GameObjects;
 
-namespace Apprentice
+namespace Apprentice.Maps
 {
     abstract class Map
     {
@@ -77,10 +78,44 @@ namespace Apprentice
                 System.Console.WriteLine("WARNING: Tried to remove a GameObject from a map of which it was not a part.  This is a bug...");
         }
 
+        public GameObject CollidingObjectAt(Coord position)
+        {
+            // Terrain always blocks.
+            if (Terrain[position] != null && !Terrain[position].IsWalkable)
+                return Terrain[position];
+
+            // Return any non-walkable object, assuming no collisions.
+            foreach (var gObject in Entities.GetItems(position))
+                if (!gObject.IsWalkable)
+                    return gObject;
+
+            return null;
+        }
+
         private void onEntityMoved(object s, MovedEventArgs e)
         {
             var gObject = (GameObject)s;
             _entities.Move(gObject, e.NewPosition);
+        }
+
+        // Chooses a position with no colliding objects.
+        public static Coord RandomOpenPosition(Map map, IRandom rng)
+        {
+            Coord pos = Coord.Get(rng.Next(map.Width - 1), rng.Next(map.Height - 1));
+            while (map.CollidingObjectAt(pos) != null)
+                pos = Coord.Get(rng.Next(map.Width - 1), rng.Next(map.Height - 1));
+
+            return pos;
+        }
+
+        // Takes MapOf that tells it whether it can take a certain position or not.
+        public static Coord RandomOpenPosition(IMapOf<bool> map, IRandom rng)
+        {
+            Coord pos = Coord.Get(rng.Next(map.Width - 1), rng.Next(map.Height - 1));
+            while (!map[pos])
+                pos = Coord.Get(rng.Next(map.Width - 1), rng.Next(map.Height - 1));
+
+            return pos;
         }
     }
 }

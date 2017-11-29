@@ -56,7 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraPanel.cs" />
-    <Compile Include="DemiPlane.cs" />
+    <Compile Include="GameObjects\Terrain\Tree.cs" />
+    <Compile Include="Maps\DemiPlane.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Terrain\Floor.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
@@ -65,7 +66,9 @@
     <Compile Include="ApprenticeGame.cs" />
     <Compile Include="GlobalKeyHandler.cs" />
     <Compile Include="MainCameraPanel.cs" />
-    <Compile Include="Map.cs" />
+    <Compile Include="Maps\Map.cs" />
+    <Compile Include="Maps\NeverNever.cs" />
+    <Compile Include="NeverNeverGate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

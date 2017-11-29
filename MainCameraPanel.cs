@@ -1,4 +1,5 @@
-﻿using GoRogue;
+﻿using Apprentice.Maps;
+using GoRogue;
 using RLNET;
 using WinMan;
 
@@ -11,6 +12,9 @@ namespace Apprentice
             : base(rootX, rootY, width, height, mapToRender)
         {
             AcceptsKeyboardInput = true;
+
+            // Sync player manually the first time since they won't have moved after creation of this panel to trigger below lambda.
+            CameraPosition = ApprenticeGame.Player.Position;
 
             // Keep player in sync with player when they move.
             ApprenticeGame.Player.Moved += (s, e) => CameraPosition = e.NewPosition;
@@ -42,6 +46,16 @@ namespace Apprentice
                 case RLKey.Right:
                 case RLKey.L:
                     dirToMove = Direction.RIGHT;
+                    break;
+                case RLKey.Period:
+                    if (e.KeyPress.Shift) // ">" key; check for gate to go.
+                    {
+                        // Huh.  This code does need to know that the gate it's looking for is terrain.  Not sure how I feel about that.
+                        if (MapToRender.Terrain[ApprenticeGame.Player.Position] is NeverNeverGate gate)
+                            gate.Traverse();
+                    }
+                    else
+                        e.Cancel = false;
                     break;
                 default:
                     e.Cancel = false;

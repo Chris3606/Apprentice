@@ -1,8 +1,9 @@
 ﻿using GoRogue;
 using GoRogue.MapGeneration;
+using GoRogue.Random;
 using Apprentice.GameObjects.Terrain;
 
-namespace Apprentice
+namespace Apprentice.Maps
 {
     class DemiPlane : Map
     {
@@ -16,13 +17,22 @@ namespace Apprentice
         {
             var terrainGen = new ArrayMapOf<bool>(Width, Height);
             new RectangleMapGenerator(terrainGen).Generate();
+            Coord neverNeverGatePos = RandomOpenPosition(terrainGen, SingletonRandom.DefaultRNG);
 
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
                     if (terrainGen[x, y])
-                        Add(new Floor(Coord.Get(x, y)));
+                    {
+                        if (Coord.Get(x, y) != neverNeverGatePos)
+                            Add(new Floor(Coord.Get(x, y)));
+                        else
+                            Add(new NeverNeverGate(Coord.Get(x, y)));
+                    }
                     else
                         Add(new Wall(Coord.Get(x, y)));
+
+            
+            
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using WinMan;
+﻿using Apprentice.Maps;
+using WinMan;
 
 namespace Apprentice
 {
