@@ -50,19 +50,21 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WinMan, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\WinMan.0.5.0\lib\net461\WinMan.dll</HintPath>
+    <Reference Include="WinMan, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\WinMan.0.6.0\lib\net461\WinMan.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraPanel.cs" />
     <Compile Include="DemiPlane.cs" />
-    <Compile Include="GameObjects\Floor.cs" />
+    <Compile Include="GameObjects\Player.cs" />
+    <Compile Include="GameObjects\Terrain\Floor.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
-    <Compile Include="GameObjects\Wall.cs" />
+    <Compile Include="GameObjects\Terrain\Wall.cs" />
     <Compile Include="GameScreen.cs" />
     <Compile Include="ApprenticeGame.cs" />
     <Compile Include="GlobalKeyHandler.cs" />
+    <Compile Include="MainCameraPanel.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

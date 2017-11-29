@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GoRogue;
+﻿using GoRogue;
 using GoRogue.MapGeneration;
-using Apprentice.GameObjects;
+using Apprentice.GameObjects.Terrain;
 
 namespace Apprentice
 {
@@ -25,9 +20,9 @@ namespace Apprentice
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
                     if (terrainGen[x, y])
-                        _terrain[x, y] = new Floor(Coord.Get(x, y));
+                        Add(new Floor(Coord.Get(x, y)));
                     else
-                        _terrain[x, y] = new Wall(Coord.Get(x, y));
+                        Add(new Wall(Coord.Get(x, y)));
         }
     }
 }

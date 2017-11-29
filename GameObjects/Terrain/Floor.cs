@@ -1,7 +1,7 @@
 ﻿using RLNET;
 using GoRogue;
 
-namespace Apprentice.GameObjects
+namespace Apprentice.GameObjects.Terrain
 {
     class Floor : GameObject
     {
