@@ -1,10 +1,11 @@
-﻿using Apprentice.GameObjects;
+﻿using Apprentice.Effects;
 using Apprentice.World;
 using GoRogue;
 using RLNET;
 
 namespace Apprentice.GameObjects.Terrain
 {
+    // Piece of terrain that basically uses dimensional teleport effect.
     class Gate : GameObject
     {
         public Map DestinationMap;
@@ -18,18 +19,10 @@ namespace Apprentice.GameObjects.Terrain
         }
 
         // Call to send given object to destination.
-        // TODO: This should be an effect later.
+        // TODO: Really this may end up wanting to do collision detection here to figure out who/what to send, in case monsters want to use.
         public void Traverse(GameObject gObject)
         {
-            // TODO: Later this may need to join with thread to make sure initial generation is done.  Not sure if we'll generate dynamically or not, since multiple gates will be a thing.
-            if (CurrentMap != DestinationMap)
-            {
-                CurrentMap.Remove(gObject); // Remove from where the gate is
-                gObject.Position = DestinationPosition;
-                DestinationMap.Add(gObject);
-            }
-            else
-                gObject.Position = DestinationPosition;
+            new Teleport().Trigger(new TeleportEffectArgs(gObject, DestinationMap, DestinationPosition));
         }
     }
 }
