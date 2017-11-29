@@ -7,7 +7,7 @@ namespace Apprentice.GameObjects.Terrain
     class Wall : GameObject
     {
         public Wall(Coord position)
-            : base(position, Map.Layer.Terrain, '#', RLColor.White, RLColor.Black, false, false)
+            : base(position, Map.Layer.Terrain, '#', false, false)
         { }
     }
 }

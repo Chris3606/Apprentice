@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraPanel.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Terrain\Tree.cs" />
     <Compile Include="MapOfProviders\FOVProvider.cs" />
     <Compile Include="World\DemiPlane.cs" />
@@ -69,7 +70,7 @@
     <Compile Include="MainCameraPanel.cs" />
     <Compile Include="World\Map.cs" />
     <Compile Include="World\NeverNever.cs" />
-    <Compile Include="Gate.cs" />
+    <Compile Include="GameObjects\Terrain\Gate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World\GameWorld.cs" />
   </ItemGroup>

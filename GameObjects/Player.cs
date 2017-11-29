@@ -7,7 +7,7 @@ namespace Apprentice.GameObjects
     class Player : GameObject
     {
         public Player(Coord position)
-            : base(position, Map.Layer.Monsters, '@', RLColor.White, null, false, true)
+            : base(position, Map.Layer.Monsters, '@', false, true)
         {
             Moved += (s, e) => { if (CurrentMap != null) CurrentMap.FOVNeedsRecalc = true; };
         }

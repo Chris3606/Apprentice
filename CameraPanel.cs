@@ -49,14 +49,13 @@ namespace Apprentice
         {
             _mapToRender = mapToRender;
             cameraBounds = new Rectangle(0, 0, 0, 0);
-
             // Make sure camera stays centered when window is resized.
             OnResize += (s, e) => recalcActualPosition();
         }
 
         public override void UpdateLayout(object sender, UpdateEventArgs e)
         {
-            console.Clear(0, RLColor.LightGray, RLColor.White);
+            console.Clear();
 
             if (_mapToRender != null)
             {
@@ -64,16 +63,19 @@ namespace Apprentice
                 for (int x = cameraBounds.X; x <= cameraBounds.MaxX; x++)
                     for (int y = cameraBounds.Y; y <= cameraBounds.MaxY; y++)
                     {
-                        if (_mapToRender.FOVAt(x, y) > 0.0)
-                            renderGameObject(_mapToRender.Terrain[x, y], x - cameraBounds.X, y - cameraBounds.Y);
-                        //else
-                        //    console.SetBackColor(x - cameraBounds.X, y - cameraBounds.Y, RLColor.LightGray); // Render fog for now, disregard explored.
+                        if (_mapToRender.FOVAt(x, y) > 0.0)    // In FOV; render normally
+                            renderGameObject(_mapToRender.Terrain[x, y], x - cameraBounds.X, y - cameraBounds.Y, _mapToRender.Terrain[x, y].Foreground,
+                                             _mapToRender.BackgroundColors[x, y]);
+                        else if (_mapToRender.IsExplored(x, y)) // Not in FOV but explored; render with grey foreground color, no background
+                            renderGameObject(_mapToRender.Terrain[x, y], x - cameraBounds.X, y - cameraBounds.Y, RLColor.Gray, null);
+
                     }
 
-                // Render everything else
+                // Render everything else in FOV
                 foreach (var gObject in _mapToRender.Entities.Items)
                     if (_mapToRender.FOVAt(gObject.Position) > 0.0)
-                        renderGameObject(gObject, gObject.Position.X - cameraBounds.X, gObject.Position.Y - cameraBounds.Y);
+                        renderGameObject(gObject, gObject.Position.X - cameraBounds.X, gObject.Position.Y - cameraBounds.Y, gObject.Foreground,
+                                         _mapToRender.BackgroundColors[gObject.Position]);
             }
         }
 
@@ -89,16 +91,10 @@ namespace Apprentice
             }
         }
 
-        private void renderGameObject(GameObject gObject, int consoleX, int consoleY)
+        // Renders game object, overriding colors with the ones specified.
+        private void renderGameObject(GameObject gObject, int consoleX, int consoleY, RLColor foreColor, RLColor? backColor)
         {
-            if (gObject.Character.HasValue)
-                console.SetChar(consoleX, consoleY, gObject.Character.Value, (int)gObject.Layer);
-
-            if (gObject.Foreground.HasValue)
-                console.SetColor(consoleX, consoleY, gObject.Foreground.Value, (int)gObject.Layer);
-
-            if (gObject.Background.HasValue)
-                console.SetBackColor(consoleX, consoleY, gObject.Background.Value, (int)gObject.Layer);
+            console.Set(consoleX, consoleY, foreColor, backColor, gObject.Character, (int)gObject.Layer);
         }
     }
 }

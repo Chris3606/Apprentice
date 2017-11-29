@@ -47,9 +47,8 @@ namespace Apprentice.GameObjects
         }
 
         public Map.Layer Layer { get; private set; }
-        public int? Character { get; set; }
-        public RLColor? Foreground { get; private set; }
-        public RLColor? Background { get; private set; }
+        public int Character { get; set; }
+        public RLColor Foreground { get; private set; }
         public bool IsWalkable { get; private set; }
         public bool IsTransparent { get; private set; }
         public uint ID { get; private set; }
@@ -78,13 +77,12 @@ namespace Apprentice.GameObjects
         public event EventHandler<MapChangedEventArgs> AddedToMap;
         public event EventHandler<MapChangedEventArgs> RemovedFromMap;
 
-        public GameObject(Coord position, Map.Layer layer, int? character, RLColor? foreground, RLColor? background, bool isWalkable = true, bool isTransparent = true)
+        public GameObject(Coord position, Map.Layer layer, int character, RLColor foreground, bool isWalkable = true, bool isTransparent = true)
         {
             Position = position;
             Layer = layer;
             Character = character;
             Foreground = foreground;
-            Background = background;
             IsWalkable = isWalkable;
             IsTransparent = isTransparent;
             ID = idGen.UseID();
@@ -94,6 +92,10 @@ namespace Apprentice.GameObjects
             AddedToMap = null;
             RemovedFromMap = null;
         }
+
+        public GameObject(Coord position, Map.Layer layer, int character, bool isWalkable = true, bool isTransparent = true)
+            : this(position, layer, character, RLColor.White, isWalkable, isTransparent)
+        { }
 
         public bool MoveIn(Direction direction)
         {

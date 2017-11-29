@@ -1,5 +1,6 @@
 ﻿using GoRogue;
 using GoRogue.Random;
+using Apprentice.GameObjects.Terrain;
 
 namespace Apprentice.World
 {

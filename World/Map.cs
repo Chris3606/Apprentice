@@ -2,6 +2,7 @@
 using GoRogue.Random;
 using Apprentice.GameObjects;
 using Apprentice.MapOfProviders;
+using RLNET;
 
 namespace Apprentice.World
 {
@@ -21,6 +22,9 @@ namespace Apprentice.World
         private MultiSpatialMap<GameObject> _entities;
         public IReadOnlySpatialMap<GameObject> Entities { get => _entities.AsReadOnly(); }
 
+        private ArrayMapOf<RLColor?> _backgroundColors;
+        public IMapOf<RLColor?> BackgroundColors { get => _backgroundColors; }
+
         private FOVProvider fovProvider;
         private LOS fov;
         RadiusAreaProvider losAreaProvider;
@@ -33,6 +37,7 @@ namespace Apprentice.World
 
             _terrain = new ArrayMapOf<GameObject>(width, height);
             _entities = new MultiSpatialMap<GameObject>();
+            _backgroundColors = new ArrayMapOf<RLColor?>(width, height);
             FOVNeedsRecalc = true;
 
             fovProvider = new FOVProvider(this);
@@ -115,11 +120,14 @@ namespace Apprentice.World
                 losAreaProvider.Radius = radius; // Library automatically checks if this actually changed before doing anything, pre-emptive set ok here
                 fov.Calculate(position.X, position.Y, radius, radiusShape);
 
+                // For everything in FOV, it's explored.
                 foreach (var pos in losAreaProvider.Positions())
-                    explored[pos.X, pos.Y] = true;
+                    if (fov[pos] > 0.0) 
+                        explored[pos.X, pos.Y] = true;
             }
         }
 
+        public bool IsExplored(int x, int y) => explored[x, y];
         public bool IsExplored(Coord position) => explored[position.X, position.Y];
 
         public double FOVAt(Coord position) => fov[position];

@@ -1,4 +1,5 @@
-﻿using GoRogue;
+﻿using Apprentice.GameObjects.Terrain;
+using GoRogue;
 using RLNET;
 using WinMan;
 
