@@ -1,4 +1,5 @@
 ﻿using Apprentice.World;
+using Apprentice.GameObjects.Components;
 using GoRogue;
 using RLNET;
 using System;
@@ -52,6 +53,9 @@ namespace Apprentice.GameObjects
         public bool IsWalkable { get; private set; }
         public bool IsTransparent { get; private set; }
         public uint ID { get; private set; }
+
+        // Components
+        public Combat Combat { get; protected set; }
 
         private Map _currentMap;
         // NOBODY but map should change this.

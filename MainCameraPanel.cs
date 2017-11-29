@@ -69,7 +69,7 @@ namespace Apprentice
             if (dirToMove != Direction.NONE)
             {
                 // Later this will likely be moveOrAttack.
-                ApprenticeGame.Player.MoveIn(dirToMove);
+                ApprenticeGame.Player.Combat.MoveOrAttackIn(dirToMove);
             }
         }
 

@@ -56,8 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraPanel.cs" />
+    <Compile Include="Effects\EffectArgs.cs" />
+    <Compile Include="Effects\PhysicalDamage.cs" />
     <Compile Include="Effects\Teleport.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GameObjects\Components\Combat.cs" />
+    <Compile Include="GameObjects\Components\Component.cs" />
+    <Compile Include="GameObjects\Enemies\Enemy.cs" />
+    <Compile Include="GameObjects\Enemies\PassiveEnemy.cs" />
+    <Compile Include="GameObjects\Items\Corpse.cs" />
     <Compile Include="GameObjects\Terrain\Tree.cs" />
     <Compile Include="MapOfProviders\FOVProvider.cs" />
     <Compile Include="World\DemiPlane.cs" />

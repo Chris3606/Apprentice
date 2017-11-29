@@ -2,6 +2,7 @@
 using RLNET;
 using WinMan;
 using Apprentice.GameObjects;
+using Apprentice.GameObjects.Enemies;
 using Apprentice.World;
 using System;
 
@@ -73,9 +74,22 @@ namespace Apprentice
 
                 // Render everything else in FOV
                 foreach (var gObject in _mapToRender.Entities.Items)
+                {
                     if (_mapToRender.FOVAt(gObject.Position) > 0.0)
+                    {
                         renderGameObject(gObject, gObject.Position.X - cameraBounds.X, gObject.Position.Y - cameraBounds.Y, gObject.Foreground,
                                          _mapToRender.BackgroundColors[gObject.Position]);
+
+                        if (gObject is Enemy enemy)
+                            if (!enemy.BeenSeen)
+                            {
+                                enemy.BeenSeen = true;
+                                ApprenticeGame.Player.EnemiesSeen++;
+                            }
+                    }
+
+                }
+
             }
         }
 

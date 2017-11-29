@@ -1,4 +1,5 @@
-﻿using Apprentice.GameObjects.Terrain;
+﻿using Apprentice.GameObjects.Enemies;
+using Apprentice.GameObjects.Terrain;
 using GoRogue;
 using GoRogue.MapGeneration;
 using GoRogue.Random;
@@ -8,7 +9,6 @@ namespace Apprentice.World
     // Might be a temp class.  For now just generates the pleasant part that they player goes to.
     class NeverNever : Map
     {
-        public Coord SpawnPoint { get; private set; }
         public NeverNever(int width, int height)
             : base(width, height)
         { }
@@ -31,7 +31,12 @@ namespace Apprentice.World
                     else
                         Add(new Wall(Coord.Get(x, y)));
 
-            SpawnPoint = RandomOpenPosition(this, SingletonRandom.DefaultRNG);
+            // Generate enemies
+            for (int i = 0; i < 5; i++)
+            {
+                Coord enemyPos = RandomOpenPosition(this, SingletonRandom.DefaultRNG);
+                Add(new PassiveEnemy(enemyPos));
+            }
         }
     }
 }

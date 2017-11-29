@@ -5,15 +5,14 @@ using GoRogue;
 
 namespace Apprentice.Effects
 {
-    class TeleportEffectArgs : EffectArgs
+    class TeleportEffectArgs : TargetableEffectArgs
     {
-        public GameObject Target { get; private set; }
         public Map DestinationMap { get; private set; }
         public Coord DestinationPosition { get; private set; }
 
         public TeleportEffectArgs(GameObject target, Map destinationMap, Coord destinationPosition)
+            : base(target)
         {
-            Target = target;
             DestinationMap = destinationMap;
             DestinationPosition = destinationPosition;
         }
