@@ -1,8 +1,9 @@
 ﻿using GoRogue;
 using GoRogue.Random;
 using Apprentice.GameObjects;
+using Apprentice.MapOfProviders;
 
-namespace Apprentice.Maps
+namespace Apprentice.World
 {
     abstract class Map
     {
@@ -11,6 +12,7 @@ namespace Apprentice.Maps
         public int Width { get; private set; }
         public int Height { get; private set; }
         public Rectangle Bounds { get => new Rectangle(0, 0, Width, Height); }
+        public bool FOVNeedsRecalc { get; set; }
 
         private ArrayMapOf<GameObject> _terrain;
         public IMapOf<GameObject> Terrain { get => _terrain; }
@@ -19,6 +21,11 @@ namespace Apprentice.Maps
         private MultiSpatialMap<GameObject> _entities;
         public IReadOnlySpatialMap<GameObject> Entities { get => _entities.AsReadOnly(); }
 
+        private FOVProvider fovProvider;
+        private LOS fov;
+        RadiusAreaProvider losAreaProvider;
+        private bool[,] explored;
+        
         protected Map(int width, int height)
         {
             Width = width;
@@ -26,9 +33,16 @@ namespace Apprentice.Maps
 
             _terrain = new ArrayMapOf<GameObject>(width, height);
             _entities = new MultiSpatialMap<GameObject>();
+            FOVNeedsRecalc = true;
+
+            fovProvider = new FOVProvider(this);
+            fov = new LOS(fovProvider);
+            losAreaProvider = new RadiusAreaProvider(Coord.Get(0, 0), 0, Radius.DIAMOND, Bounds);
+            explored = new bool[Width, Height];
         }
 
-        // Tells the map to generate itself.  Needs to be called somewhere else other than Map, Map's constructor can't call it because it's abstract.
+        // Tells the map to generate itself.  Needs to be called somewhere else other than Map, Map's constructor can't call it because it's abstract,
+        // and probably shouldn't anyway because of need for map loading.
         abstract public void Generate();
 
         // Adds entity to the map.
@@ -91,6 +105,25 @@ namespace Apprentice.Maps
 
             return null;
         }
+
+        public void CalculateFOVIfNeeded(Coord position, int radius, Radius radiusShape)
+        {
+            if (FOVNeedsRecalc)
+            {
+                FOVNeedsRecalc = false;
+                losAreaProvider.Center = position;
+                losAreaProvider.Radius = radius; // Library automatically checks if this actually changed before doing anything, pre-emptive set ok here
+                fov.Calculate(position.X, position.Y, radius, radiusShape);
+
+                foreach (var pos in losAreaProvider.Positions())
+                    explored[pos.X, pos.Y] = true;
+            }
+        }
+
+        public bool IsExplored(Coord position) => explored[position.X, position.Y];
+
+        public double FOVAt(Coord position) => fov[position];
+        public double FOVAt(int x, int y) => fov[x, y];
 
         private void onEntityMoved(object s, MovedEventArgs e)
         {

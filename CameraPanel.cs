@@ -2,12 +2,12 @@
 using RLNET;
 using WinMan;
 using Apprentice.GameObjects;
-using Apprentice.Maps;
+using Apprentice.World;
 using System;
 
 namespace Apprentice
 {
-    // Designed to display a portion of specified map to its console.
+    // Designed to display a portion of specified map to its console, respecting the map's FOV as it does so.
     class CameraPanel : Panel
     {
         private Map _mapToRender;
@@ -56,18 +56,24 @@ namespace Apprentice
 
         public override void UpdateLayout(object sender, UpdateEventArgs e)
         {
-            console.Clear();
+            console.Clear(0, RLColor.LightGray, RLColor.White);
 
             if (_mapToRender != null)
             {
                 // Render terrain
                 for (int x = cameraBounds.X; x <= cameraBounds.MaxX; x++)
                     for (int y = cameraBounds.Y; y <= cameraBounds.MaxY; y++)
-                        renderGameObject(_mapToRender.Terrain[x, y], x - cameraBounds.X, y - cameraBounds.Y);
+                    {
+                        if (_mapToRender.FOVAt(x, y) > 0.0)
+                            renderGameObject(_mapToRender.Terrain[x, y], x - cameraBounds.X, y - cameraBounds.Y);
+                        //else
+                        //    console.SetBackColor(x - cameraBounds.X, y - cameraBounds.Y, RLColor.LightGray); // Render fog for now, disregard explored.
+                    }
 
                 // Render everything else
                 foreach (var gObject in _mapToRender.Entities.Items)
-                    renderGameObject(gObject, gObject.Position.X - cameraBounds.X, gObject.Position.Y - cameraBounds.Y);
+                    if (_mapToRender.FOVAt(gObject.Position) > 0.0)
+                        renderGameObject(gObject, gObject.Position.X - cameraBounds.X, gObject.Position.Y - cameraBounds.Y);
             }
         }
 

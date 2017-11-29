@@ -1,4 +1,4 @@
-﻿using Apprentice.Maps;
+﻿using Apprentice.World;
 using GoRogue;
 using RLNET;
 
@@ -8,6 +8,8 @@ namespace Apprentice.GameObjects
     {
         public Player(Coord position)
             : base(position, Map.Layer.Monsters, '@', RLColor.White, null, false, true)
-        { }
+        {
+            Moved += (s, e) => { if (CurrentMap != null) CurrentMap.FOVNeedsRecalc = true; };
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Apprentice.GameObjects;
-using Apprentice.Maps;
+using Apprentice.World;
 using GoRogue;
 using GoRogue.Random;
 using RLNET;
@@ -9,8 +9,9 @@ namespace Apprentice
 {
     class ApprenticeGame
     {
-        static public DemiPlane DemiPlane { get; private set; }
-        static public NeverNever NeverNever { get; private set; }
+        static public GameWorld World { get; private set; }
+        static public GameScreen GameScreen;
+        static public Player Player { get; private set; }
         static public Map ActiveMap
         {
             get
@@ -21,8 +22,6 @@ namespace Apprentice
                 return Player.CurrentMap;
             }
         }
-        static public GameScreen GameScreen;
-        static public Player Player { get; private set; }
 
         static private KeyHandler globalKeyHandler; // handles global keys like fullscreen and exit
 
@@ -44,12 +43,13 @@ namespace Apprentice
 
             Engine.Init(settings);
 
-            GenerateMaps();
+            // Generate new world
+            World = new GameWorld(30, 30, 80, 80);
 
             // For now we just spawn player at random position in the demi-plane
-            Coord playerSpawn = Map.RandomOpenPosition(DemiPlane, SingletonRandom.DefaultRNG);
+            Coord playerSpawn = Map.RandomOpenPosition(World.DemiPlane, SingletonRandom.DefaultRNG);
             Player = new Player(playerSpawn);
-            DemiPlane.Add(Player); // Changes active map too
+            World.DemiPlane.Add(Player); // Changes active map too
 
             // Global key commands setup
             globalKeyHandler = new GlobalKeyHandler();
@@ -62,26 +62,6 @@ namespace Apprentice
             
 
             Engine.Run();
-        }
-
-        // For now we have a function to do this.  Probably best later if we have like a WorldManager that can do this, load maps, etc.
-        public static void GenerateMaps()
-        {
-            // Create demi plane
-            DemiPlane = new DemiPlane(30, 30);
-            DemiPlane.Generate();
-
-            // Create never-never
-            NeverNever = new NeverNever(80, 80);
-            NeverNever.Generate();
-
-            // Create gate between two.
-            Coord gateSourcePosition = Map.RandomOpenPosition(DemiPlane, SingletonRandom.DefaultRNG);
-            Coord gateDestinationPosition = Map.RandomOpenPosition(NeverNever, SingletonRandom.DefaultRNG);
-
-            DemiPlane.Remove(DemiPlane.Terrain[gateSourcePosition]);
-            DemiPlane.Add(new Gate(gateSourcePosition, NeverNever, gateDestinationPosition));
-
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Apprentice.Maps;
+﻿using Apprentice.World;
 using GoRogue;
 using RLNET;
 using System;

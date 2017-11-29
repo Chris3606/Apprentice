@@ -1,9 +1,8 @@
 ﻿using GoRogue;
 using GoRogue.MapGeneration;
-using GoRogue.Random;
 using Apprentice.GameObjects.Terrain;
 
-namespace Apprentice.Maps
+namespace Apprentice.World
 {
     class DemiPlane : Map
     {

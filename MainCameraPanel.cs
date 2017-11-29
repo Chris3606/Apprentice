@@ -1,5 +1,4 @@
-﻿using Apprentice.Maps;
-using GoRogue;
+﻿using GoRogue;
 using RLNET;
 using WinMan;
 
@@ -71,6 +70,14 @@ namespace Apprentice
                 // Later this will likely be moveOrAttack.
                 ApprenticeGame.Player.MoveIn(dirToMove);
             }
+        }
+
+        public override void UpdateLayout(object sender, UpdateEventArgs e)
+        {
+            if (MapToRender != null)
+                MapToRender.CalculateFOVIfNeeded(ApprenticeGame.Player.Position, 10, Radius.DIAMOND);
+
+            base.UpdateLayout(sender, e);
         }
     }
 }

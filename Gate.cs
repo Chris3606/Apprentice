@@ -1,5 +1,5 @@
 ﻿using Apprentice.GameObjects;
-using Apprentice.Maps;
+using Apprentice.World;
 using GoRogue;
 using RLNET;
 
@@ -11,7 +11,7 @@ namespace Apprentice
         public Coord DestinationPosition;
 
         public Gate(Coord position, Map destinationMap, Coord destinationPosition)
-            : base(position, Map.Layer.Terrain, '>', RLColor.Blue, null, true, true)
+            : base(position, Map.Layer.Terrain, '>', RLColor.Blue, RLColor.Black, true, true)
         {
             DestinationMap = destinationMap;
             DestinationPosition = destinationPosition;

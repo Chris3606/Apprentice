@@ -3,7 +3,7 @@ using GoRogue;
 using GoRogue.MapGeneration;
 using GoRogue.Random;
 
-namespace Apprentice.Maps
+namespace Apprentice.World
 {
     // Might be a temp class.  For now just generates the pleasant part that they player goes to.
     class NeverNever : Map
