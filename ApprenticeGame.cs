@@ -44,7 +44,7 @@ namespace Apprentice
             Engine.Init(settings);
 
             // Generate new world
-            World = new GameWorld(30, 30, 80, 80);
+            World = new GameWorld(30, 30, 50, 50);
 
             // For now we just spawn player at random position in the demi-plane
             Coord playerSpawn = Map.RandomOpenPosition(World.DemiPlane, SingletonRandom.DefaultRNG);

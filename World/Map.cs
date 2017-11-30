@@ -3,6 +3,7 @@ using GoRogue.Random;
 using Apprentice.GameObjects;
 using Apprentice.MapOfProviders;
 using RLNET;
+using System.Collections.Generic;
 
 namespace Apprentice.World
 {
@@ -111,6 +112,15 @@ namespace Apprentice.World
             return null;
         }
 
+        public IEnumerable<GameObject> ObjectsAt(Coord position)
+        {
+            if (_terrain[position] != null)
+                yield return _terrain[position];
+
+            foreach (var gObject in _entities.GetItems(position))
+                yield return gObject;
+        }
+
         public void CalculateFOVIfNeeded(Coord position, int radius, Radius radiusShape)
         {
             if (FOVNeedsRecalc)
@@ -132,6 +142,19 @@ namespace Apprentice.World
 
         public double FOVAt(Coord position) => fov[position];
         public double FOVAt(int x, int y) => fov[x, y];
+
+        // Sets map bg color to specified value
+        protected void SetBackgroundColor(RLColor color)
+        {
+            for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Height; y++)
+                    _backgroundColors[x, y] = color;
+        }
+
+        protected void SetBackgroundColor(Coord pos, RLColor color)
+        {
+            _backgroundColors[pos] = color;
+        }
 
         private void onEntityMoved(object s, MovedEventArgs e)
         {

@@ -64,9 +64,13 @@
     <Compile Include="GameObjects\Components\Component.cs" />
     <Compile Include="GameObjects\Enemies\Enemy.cs" />
     <Compile Include="GameObjects\Enemies\PassiveEnemy.cs" />
+    <Compile Include="GameObjects\IActivatable.cs" />
     <Compile Include="GameObjects\Items\Corpse.cs" />
+    <Compile Include="GameObjects\Terrain\AltarOfVectoring.cs" />
+    <Compile Include="GameObjects\Terrain\Gate.cs" />
     <Compile Include="GameObjects\Terrain\Tree.cs" />
     <Compile Include="MapOfProviders\FOVProvider.cs" />
+    <Compile Include="World\CaveofLearning.cs" />
     <Compile Include="World\DemiPlane.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Terrain\Floor.cs" />
@@ -78,7 +82,7 @@
     <Compile Include="MainCameraPanel.cs" />
     <Compile Include="World\Map.cs" />
     <Compile Include="World\NeverNever.cs" />
-    <Compile Include="GameObjects\Terrain\Gate.cs" />
+    <Compile Include="GameObjects\Teleporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World\GameWorld.cs" />
   </ItemGroup>

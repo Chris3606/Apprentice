@@ -1,4 +1,5 @@
-﻿using Apprentice.GameObjects.Terrain;
+﻿using Apprentice.GameObjects;
+using Apprentice.World;
 using GoRogue;
 using RLNET;
 using WinMan;
@@ -26,57 +27,90 @@ namespace Apprentice
 
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Cancel = true; // Default case will set this back
-
             Direction dirToMove = Direction.NONE;
             switch (e.KeyPress.Key)
             {
-                case RLKey.W:
-                case RLKey.Up:
+                case RLKey.Keypad8:
                 case RLKey.K:
                     dirToMove = Direction.UP;
+                    e.Cancel = true;
                     break;
-                case RLKey.S:
-                case RLKey.Down:
-                case RLKey.J:
-                    dirToMove = Direction.DOWN;
+                case RLKey.Keypad9:
+                case RLKey.U:
+                    dirToMove = Direction.UP_RIGHT;
+                    e.Cancel = true;
                     break;
-                case RLKey.A:
-                case RLKey.Left:
-                case RLKey.H:
-                    dirToMove = Direction.LEFT;
-                    break;
-                case RLKey.D:
-                case RLKey.Right:
+                case RLKey.Keypad6:
                 case RLKey.L:
                     dirToMove = Direction.RIGHT;
+                    e.Cancel = true;
+                    break;
+                case RLKey.Keypad3:
+                case RLKey.N:
+                    dirToMove = Direction.DOWN_RIGHT;
+                    e.Cancel = true;
+                    break;
+                case RLKey.Keypad2:
+                case RLKey.J:
+                    dirToMove = Direction.DOWN;
+                    e.Cancel = true;
+                    break;
+                case RLKey.Keypad1:
+                case RLKey.B:
+                    dirToMove = Direction.DOWN_LEFT;
+                    e.Cancel = true;
+                    break;
+                case RLKey.Keypad4:
+                case RLKey.H:
+                    dirToMove = Direction.LEFT;
+                    e.Cancel = true;
+                    break;
+                case RLKey.Keypad7:
+                case RLKey.Y:
+                    dirToMove = Direction.UP_LEFT;
+                    e.Cancel = true;
                     break;
                 case RLKey.Period:
-                    if (e.KeyPress.Shift) // ">" key; check for gate to go.
+                    if (e.KeyPress.Shift) // ">" key; check for stairy-stuff.  Probably need to split this off, teleporter may go away since direction would be diff.
                     {
-                        // Huh.  This code does need to know that the gate it's looking for is terrain.  Not sure how I feel about that.
-                        if (MapToRender.Terrain[ApprenticeGame.Player.Position] is Gate gate)
-                            gate.Traverse(ApprenticeGame.Player); // TODO: Gate traverse is probably not cool here, really need to have gate determine who goes where?
+                        foreach (var gObject in MapToRender.ObjectsAt(ApprenticeGame.Player.Position))
+                            if (gObject is Teleporter teleporter)
+                            {
+                                teleporter.Traverse(ApprenticeGame.Player);
+                                e.Cancel = true;
+                                break;
+                            }
                     }
-                    else
-                        e.Cancel = false;
                     break;
-                default:
-                    e.Cancel = false;
+                case RLKey.Comma: // Activate top layer of whatever is below us, if something can be activated
+                    int topLayer = (int)Map.Layer.Terrain;
+                    IActivatable activatable = null;
+                    foreach (var gObj in MapToRender.ObjectsAt(ApprenticeGame.Player.Position))
+                    {
+                        if (gObj is IActivatable activate && (int)gObj.Layer >= topLayer)
+                        {
+                            topLayer = (int)gObj.Layer;
+                            activatable = activate;
+                        }
+                    }
+
+                    if (activatable != null)
+                    {
+                        activatable.Activate();
+                        e.Cancel = true;
+                    }
                     break;
             }
 
             if (dirToMove != Direction.NONE)
-            {
-                // Later this will likely be moveOrAttack.
-                ApprenticeGame.Player.Combat.MoveOrAttackIn(dirToMove);
-            }
+                if (!ApprenticeGame.Player.MoveIn(dirToMove))
+                    ApprenticeGame.Player.Combat.AttackIn(dirToMove);
         }
 
         public override void UpdateLayout(object sender, UpdateEventArgs e)
         {
             if (MapToRender != null)
-                MapToRender.CalculateFOVIfNeeded(ApprenticeGame.Player.Position, 10, Radius.DIAMOND);
+                MapToRender.CalculateFOVIfNeeded(ApprenticeGame.Player.Position, 10, Radius.CIRCLE);
 
             base.UpdateLayout(sender, e);
         }

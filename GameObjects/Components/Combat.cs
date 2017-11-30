@@ -34,15 +34,12 @@ namespace Apprentice.GameObjects.Components
 
         }
 
-        public bool MoveOrAttackIn(Direction direction)
+        public bool AttackIn(Direction direction)
         {
-            if (Parent.MoveIn(direction))
-                return true;
 
             var collider = Parent.CurrentMap.CollidingObjectAt(Parent.Position + direction);
 
-            // Collider must not be null, we collided!
-            if (collider.Combat != null)
+            if (collider != null && collider.Combat != null)
             {
                 new PhysicalDamage().Trigger(new DamageEffectArgs(collider, SingletonRandom.DefaultRNG.Next(1, 5)));
                 return true;

@@ -3,6 +3,7 @@ using Apprentice.GameObjects.Terrain;
 using GoRogue;
 using GoRogue.MapGeneration;
 using GoRogue.Random;
+using RLNET;
 
 namespace Apprentice.World
 {
@@ -13,7 +14,7 @@ namespace Apprentice.World
             : base(width, height)
         { }
 
-        // Use generate here for now, laoding can be implemented by another function later in place of generate.
+        // Use generate here for now, loading can be implemented by another function later in place of generate.
         public sealed override void Generate()
         {
             var terrainGen = new ArrayMapOf<bool>(Width, Height);
@@ -30,6 +31,8 @@ namespace Apprentice.World
                     }
                     else
                         Add(new Wall(Coord.Get(x, y)));
+
+            SetBackgroundColor(new RLColor(0, .05f, 0)); // Dark green, need to pull this out.
 
             // Generate enemies
             for (int i = 0; i < 5; i++)
