@@ -56,6 +56,7 @@ namespace Apprentice.GameObjects
 
         // Components
         public Combat Combat { get; protected set; }
+        public Caster Caster { get; protected set; }
 
         private Map _currentMap;
         // NOBODY but map should change this.

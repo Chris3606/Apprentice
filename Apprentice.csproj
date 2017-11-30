@@ -60,16 +60,22 @@
     <Compile Include="Effects\PhysicalDamage.cs" />
     <Compile Include="Effects\Teleport.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GameObjects\Components\Caster.cs" />
     <Compile Include="GameObjects\Components\Combat.cs" />
     <Compile Include="GameObjects\Components\Component.cs" />
+    <Compile Include="GameObjects\Components\Research.cs" />
     <Compile Include="GameObjects\Enemies\Enemy.cs" />
     <Compile Include="GameObjects\Enemies\PassiveEnemy.cs" />
     <Compile Include="GameObjects\IActivatable.cs" />
     <Compile Include="GameObjects\Items\Corpse.cs" />
-    <Compile Include="GameObjects\Terrain\AltarOfVectoring.cs" />
+    <Compile Include="GameObjects\Terrain\AltarOfGating.cs" />
     <Compile Include="GameObjects\Terrain\Gate.cs" />
     <Compile Include="GameObjects\Terrain\Tree.cs" />
     <Compile Include="MapOfProviders\FOVProvider.cs" />
+    <Compile Include="Research\ResearchItem.cs" />
+    <Compile Include="SpellsPanel.cs" />
+    <Compile Include="Spells\GateHome.cs" />
+    <Compile Include="Spells\Spell.cs" />
     <Compile Include="World\CaveofLearning.cs" />
     <Compile Include="World\DemiPlane.cs" />
     <Compile Include="GameObjects\Player.cs" />
@@ -95,5 +101,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

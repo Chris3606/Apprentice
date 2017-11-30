@@ -11,6 +11,7 @@ namespace Apprentice
     {
         static public GameWorld World { get; private set; }
         static public GameScreen GameScreen;
+        static public SpellsPanel SpellsPanel;
         static public Player Player { get; private set; }
         static public Map ActiveMap
         {
@@ -55,12 +56,12 @@ namespace Apprentice
             globalKeyHandler = new GlobalKeyHandler();
             globalKeyHandler.StartHandling();
 
-            // Main game screen setup
+            // UI setup
             GameScreen = new GameScreen();
+            SpellsPanel = new SpellsPanel(Screen.SizeC(0), Screen.SizeC(0), Screen.WidthMinus(0), Screen.HeightMinus(0));
+
+            // Show UI and get game underway
             GameScreen.Show();
-
-            
-
             Engine.Run();
         }
     }

@@ -100,6 +100,15 @@ namespace Apprentice
                         e.Cancel = true;
                     }
                     break;
+
+                case RLKey.P:
+                    if (e.KeyPress.Shift) // Shift-R
+                    {
+                        ApprenticeGame.GameScreen.Hide();
+                        ApprenticeGame.SpellsPanel.Show();
+                        e.Cancel = true;
+                    }
+                    break;
             }
 
             if (dirToMove != Direction.NONE)

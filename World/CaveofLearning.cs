@@ -1,6 +1,5 @@
 ﻿using GoRogue.MapGeneration;
 using GoRogue;
-using GoRogue.Random;
 using Apprentice.GameObjects.Terrain;
 
 namespace Apprentice.World
@@ -25,7 +24,8 @@ namespace Apprentice.World
                     else
                         Add(new Wall(Coord.Get(x, y)));
 
-            Add(new AltarOfVectoring(Coord.Get(Width / 2, Height / 2)));
+            // Ooh, we can learn stuff!
+            Add(new AltarOfGating(Coord.Get(Width / 2, Height / 2)));
         }
     }
 }
