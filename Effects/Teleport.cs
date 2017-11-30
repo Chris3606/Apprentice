@@ -33,6 +33,8 @@ namespace Apprentice.Effects
             }
             else
                 e.Target.Position = e.DestinationPosition;
+
+            e.DestinationMap.FOVNeedsRecalc = true; // Temp fix -- player should do this when it switches maps when fov stops being a map thing
         }
     }
 }
