@@ -72,6 +72,8 @@
     <Compile Include="GameObjects\Terrain\Gate.cs" />
     <Compile Include="GameObjects\Terrain\Tree.cs" />
     <Compile Include="MapOfProviders\FOVProvider.cs" />
+    <Compile Include="MessageCenter.cs" />
+    <Compile Include="MessageRecallPanel.cs" />
     <Compile Include="Research\ResearchItem.cs" />
     <Compile Include="SpellsPanel.cs" />
     <Compile Include="Spells\GateHome.cs" />

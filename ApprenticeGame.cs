@@ -12,6 +12,7 @@ namespace Apprentice
         static public GameWorld World { get; private set; }
         static public GameScreen GameScreen;
         static public SpellsPanel SpellsPanel;
+        static public MessageRecallPanel MessageRecallPanel;
         static public Player Player { get; private set; }
         static public Map ActiveMap
         {
@@ -59,6 +60,7 @@ namespace Apprentice
             // UI setup
             GameScreen = new GameScreen();
             SpellsPanel = new SpellsPanel(Screen.SizeC(0), Screen.SizeC(0), Screen.WidthMinus(0), Screen.HeightMinus(0));
+            MessageRecallPanel = new MessageRecallPanel(Screen.SizeC(0), Screen.SizeC(0), Screen.WidthMinus(0), Screen.HeightMinus(0));
 
             // Show UI and get game underway
             GameScreen.Show();

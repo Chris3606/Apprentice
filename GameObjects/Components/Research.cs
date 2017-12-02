@@ -19,7 +19,7 @@ namespace Apprentice.GameObjects.Components
         {
             if (item.Parent == this)
             {
-                System.Console.WriteLine("WARNING: Tried to add itemt o research twice.  This is a bug...");
+                System.Console.WriteLine("WARNING: Tried to add item to research twice.  This is a bug...");
                 return;
             }
 

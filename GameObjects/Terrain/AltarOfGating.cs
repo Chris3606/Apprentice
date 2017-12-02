@@ -14,11 +14,11 @@ namespace Apprentice.GameObjects.Terrain
         {
             // TODO: Handle duplicates better, etc.
             if (ApprenticeGame.Player.Caster.KnowsSpell("Gate Home"))
-                System.Console.WriteLine("Nothing can be learned here.");
+                MessageCenter.Write("You have learned all you can from these runes.");
             else
             {
                 ApprenticeGame.Player.Caster.AddToLearned(new Spells.GateHome());
-                System.Console.WriteLine("Player has learned the spell Gate Home!");
+                MessageCenter.Write("You study the magic runes, and learn the spell Gate Home!");
             }
         }
     }

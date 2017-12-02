@@ -6,9 +6,11 @@ using WinMan;
 
 namespace Apprentice
 {
-    // Follows main map, syncs with player, and handles player/main map input.  Basically always handles the map the player is on.
+    // Main camera panel in game view -- follows main map, syncs with player, and handles player/main map input.  Also will handle single line message display
     class MainCameraPanel : CameraPanel
     {
+        static int testInt = 1;
+
         public MainCameraPanel(ResizeCalc rootX, ResizeCalc rootY, ResizeCalc width, ResizeCalc height)
             : base(rootX, rootY, width, height, ApprenticeGame.ActiveMap)
         {
@@ -108,6 +110,16 @@ namespace Apprentice
                         ApprenticeGame.SpellsPanel.Show();
                         e.Cancel = true;
                     }
+                    else if (e.KeyPress.Control) // Control-R
+                    {
+                        ApprenticeGame.GameScreen.Hide();
+                        ApprenticeGame.MessageRecallPanel.Show();
+                        e.Cancel = true;
+                    }
+                    break;
+
+                case RLKey.A:
+                    MessageCenter.Write("Here is a 1-line message" + testInt++ + "!");
                     break;
             }
 
