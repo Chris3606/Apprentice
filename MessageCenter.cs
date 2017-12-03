@@ -7,10 +7,12 @@ namespace Apprentice
     class MessageWrittenEventArgs : EventArgs
     {
         public string Message { get; private set; }
+        public bool WasConsolidated { get; private set; }
 
-        public MessageWrittenEventArgs(string message)
+        public MessageWrittenEventArgs(string message, bool wasConsolidated)
         {
             Message = message;
+            WasConsolidated = wasConsolidated;
         }
     }
 
@@ -27,18 +29,21 @@ namespace Apprentice
 
         static public void Write(string message)
         {
+            bool consolidated;
             if (message == lastMessage) // Can only happen when at least 1 msg exists since this is null to start.
             {
                 lastMessageCount++;
                 _messages[_messages.Count - 1] = lastMessage + $"(x{lastMessageCount})";
+                consolidated = true;
             }
             else
             {
                 _messages.Add(message);
                 lastMessage = message;
                 lastMessageCount = 1;
+                consolidated = false;
             }
-            MessageWritten?.Invoke(null, new MessageWrittenEventArgs(_messages[_messages.Count - 1])); // Is no sender so we just use null here.
+            MessageWritten?.Invoke(null, new MessageWrittenEventArgs(_messages[_messages.Count - 1], consolidated)); // Is no sender so we just use null here.
         }
     }
 }
