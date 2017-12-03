@@ -1,4 +1,5 @@
 ﻿using WinMan;
+using RLNET;
 
 namespace Apprentice
 {
@@ -8,16 +9,14 @@ namespace Apprentice
 
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-            switch(e.KeyPress.Key)
+            switch(Input.ActionFor(e.KeyPress))
             {
-                case RLNET.RLKey.Q:
-                case RLNET.RLKey.Escape:
+                case InputAction.QUIT:
                     Engine.RootConsole.Close();
                     break;
-                case RLNET.RLKey.F11:
+                case InputAction.FULLSCREEN:
                     Engine.ToggleFullscreen();
                     break;
-
             }
         }
     }

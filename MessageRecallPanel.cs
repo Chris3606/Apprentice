@@ -55,14 +55,18 @@ namespace Apprentice
 
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyPress.Key == RLKey.Escape)
+            switch(Input.ActionFor(e.KeyPress))
             {
-                e.Cancel = true;
-                Hide();
-                ApprenticeGame.GameScreen.Show();
+                case InputAction.BACK:
+                    e.Cancel = true;
+                    Hide();
+                    ApprenticeGame.GameScreen.Show();
+                    break;
             }
+ 
+
             // TODO: Temp, Test messages
-            else if (e.KeyPress.Key == RLKey.A)
+            if (e.KeyPress.Key == RLKey.A)
             {
                 MessageCenter.Write("This is an alternative message!");
                 e.Cancel = true;

@@ -34,15 +34,17 @@ namespace Apprentice
 
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyPress.Key == RLKey.Escape)
+            if (Input.ActionFor(e.KeyPress) == InputAction.BACK)
             {
                 e.Cancel = true;
-                // TODO: This needs to be some sort of stack so that we cna pop off.
+                // TODO: This needs to be some sort of stack so that we can pop off.
                 ApprenticeGame.GameScreen.Show();
                 Hide();
                 return;
             }
 
+
+            // Assign characters and do this way
             if (!e.KeyPress.Char.HasValue)
                 return;
 

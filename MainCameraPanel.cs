@@ -9,8 +9,6 @@ namespace Apprentice
     // Main camera panel in game view -- follows main map, syncs with player, and handles player/main map input.  Also will handle single line message display
     class MainCameraPanel : CameraPanel
     {
-        static int testInt = 1;
-
         public MainCameraPanel(ResizeCalc rootX, ResizeCalc rootY, ResizeCalc width, ResizeCalc height)
             : base(rootX, rootY, width, height, ApprenticeGame.ActiveMap)
         {
@@ -30,61 +28,51 @@ namespace Apprentice
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
         {
             Direction dirToMove = Direction.NONE;
-            switch (e.KeyPress.Key)
+            switch (Input.ActionFor(e.KeyPress))
             {
-                case RLKey.Keypad8:
-                case RLKey.K:
+                case InputAction.UP:
                     dirToMove = Direction.UP;
                     e.Cancel = true;
                     break;
-                case RLKey.Keypad9:
-                case RLKey.U:
+                case InputAction.UP_RIGHT:
                     dirToMove = Direction.UP_RIGHT;
                     e.Cancel = true;
                     break;
-                case RLKey.Keypad6:
-                case RLKey.L:
+                case InputAction.RIGHT:
                     dirToMove = Direction.RIGHT;
                     e.Cancel = true;
                     break;
-                case RLKey.Keypad3:
-                case RLKey.N:
+                case InputAction.DOWN_RIGHT:
                     dirToMove = Direction.DOWN_RIGHT;
                     e.Cancel = true;
                     break;
-                case RLKey.Keypad2:
-                case RLKey.J:
+                case InputAction.DOWN:
                     dirToMove = Direction.DOWN;
                     e.Cancel = true;
                     break;
-                case RLKey.Keypad1:
-                case RLKey.B:
+                case InputAction.DOWN_LEFT:
                     dirToMove = Direction.DOWN_LEFT;
                     e.Cancel = true;
                     break;
-                case RLKey.Keypad4:
-                case RLKey.H:
+                case InputAction.LEFT:
                     dirToMove = Direction.LEFT;
                     e.Cancel = true;
                     break;
-                case RLKey.Keypad7:
-                case RLKey.Y:
+                case InputAction.UP_LEFT:
                     dirToMove = Direction.UP_LEFT;
                     e.Cancel = true;
                     break;
-                case RLKey.Period:
-                    if (e.KeyPress.Shift) // ">" key; check for stairy-stuff.  Probably need to split this off, teleporter may go away since direction would be diff.
-                    {
-                        foreach (var gObject in MapToRender.ObjectsAt(ApprenticeGame.Player.Position))
-                            if (gObject is Teleporter teleporter)
-                            {
-                                teleporter.Traverse(ApprenticeGame.Player);
-                                e.Cancel = true;
-                                break;
-                            }
-                    }
+                case InputAction.DOWN_STAIR:
+                    // Check for stairy-stuff.  Probably need to split this off, teleporter may go away since direction would be diff (Up gate vs down-gate would be seperate classes).
+                    foreach (var gObject in MapToRender.ObjectsAt(ApprenticeGame.Player.Position))
+                        if (gObject is Teleporter teleporter)
+                        {
+                            teleporter.Traverse(ApprenticeGame.Player);
+                            e.Cancel = true;
+                            break;
+                        }
                     break;
-                case RLKey.Comma: // Activate top layer of whatever is below us, if something can be activated
+                case InputAction.ACTIVATE: // Activate top layer of whatever is below us, if something can be activated
                     int topLayer = (int)Map.Layer.Terrain;
                     IActivatable activatable = null;
                     foreach (var gObj in MapToRender.ObjectsAt(ApprenticeGame.Player.Position))
@@ -103,25 +91,19 @@ namespace Apprentice
                     }
                     break;
 
-                case RLKey.P:
-                    if (e.KeyPress.Shift) // Shift-R
-                    {
-                        ApprenticeGame.GameScreen.Hide();
-                        ApprenticeGame.SpellsPanel.Show();
-                        e.Cancel = true;
-                    }
-                    else if (e.KeyPress.Control) // Control-R
-                    {
-                        ApprenticeGame.GameScreen.Hide();
-                        ApprenticeGame.MessageRecallPanel.Show();
-                        e.Cancel = true;
-                    }
+                case InputAction.SPELLS_SCREEN:
+                    ApprenticeGame.GameScreen.Hide();
+                    ApprenticeGame.SpellsPanel.Show();
+                    e.Cancel = true;
                     break;
 
-                case RLKey.A:
-                    MessageCenter.Write("Here is a 1-line message" + testInt++ + "!");
+                case InputAction.MESSAGE_RECALL_SCREEN:
+                    ApprenticeGame.GameScreen.Hide();
+                    ApprenticeGame.MessageRecallPanel.Show();
+                    e.Cancel = true;
                     break;
             }
+
 
             if (dirToMove != Direction.NONE)
                 if (!ApprenticeGame.Player.MoveIn(dirToMove))
