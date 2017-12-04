@@ -7,7 +7,7 @@ namespace Apprentice.GameObjects.Terrain
     class Tree : GameObject
     {
         public Tree(Coord position)
-            : base(position, Map.Layer.Terrain, 6, RLColor.Green, false, false)
+            : base(position, Map.Layer.Terrain, (int)FontChars.TREE, RLColor.Green, false, false)
         { }
     }
 }

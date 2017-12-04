@@ -60,6 +60,7 @@
     <Compile Include="Effects\PhysicalDamage.cs" />
     <Compile Include="Effects\Teleport.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Font.cs" />
     <Compile Include="GameObjects\Components\Caster.cs" />
     <Compile Include="GameObjects\Components\Combat.cs" />
     <Compile Include="GameObjects\Components\Component.cs" />

@@ -8,10 +8,24 @@ namespace Apprentice
     // Writes as many messages to the screen as will fit, updating whenever it's shown/when new msg is written)
     class MessageRecallPanel : Panel
     {
-        static private readonly int ROWS_BEFORE_MESSAGES = 2;
-        static private readonly string MORE_INDICATOR = "-- MORE --";
+        static private int ROWS_BEFORE_MESSAGES = 2;
 
         private List<string> splitMessages; // List of all messages split appropriately.
+        private int _indexOfLastDisplayed;
+        private int indexOfLastDisplayed
+        {
+            get => _indexOfLastDisplayed;
+            set
+            {
+                int max = (splitMessages.Count == 0) ? 0 : splitMessages.Count - 1;
+                int min = Math.Min(splitMessages.Count - 1, (Height - ROWS_BEFORE_MESSAGES) - 1);
+                _indexOfLastDisplayed = value;
+                _indexOfLastDisplayed = Math.Min(_indexOfLastDisplayed, max);
+                _indexOfLastDisplayed = Math.Max(_indexOfLastDisplayed, min);
+            }
+        }
+
+        private int indexOfFirstDisplayed { get => Math.Max(0, (indexOfLastDisplayed + 1) - (Height - ROWS_BEFORE_MESSAGES)); }
         // TODO: Later this above will take into account limited messages.
 
         public MessageRecallPanel(ResizeCalc rootX, ResizeCalc rootY, ResizeCalc width, ResizeCalc height)
@@ -21,6 +35,7 @@ namespace Apprentice
             OnResize += onResize;
 
             splitMessages = new List<string>();
+            indexOfLastDisplayed = 0;
 
         }
 
@@ -35,16 +50,25 @@ namespace Apprentice
             else
             {
                 int y = ROWS_BEFORE_MESSAGES;
-                int i = Math.Max(0, splitMessages.Count - (Height - ROWS_BEFORE_MESSAGES));
+                int i = indexOfFirstDisplayed;
 
-                if (i != 0) // We can't display all the messages we have, display more indicator
-                {
-                    i++; // We can display one less because we have the more indicator
-                    console.Print((Width / 2) - (MORE_INDICATOR.Length / 2), y, MORE_INDICATOR, RLColor.White);
-                    y++;
-                }
+                // If we can't display all the messages we have, display up arrow white
+                RLColor upArrowColor = (i != 0) ? RLColor.White : RLColor.Gray;
+                // If we can't display most recent ones, display down arrow white
+                RLColor downArrowColor = (indexOfLastDisplayed != splitMessages.Count - 1) ? RLColor.White : RLColor.Gray;
 
-                while (i < splitMessages.Count)
+                RLColor scrollColor = RLColor.White;
+                if (i == 0 && indexOfLastDisplayed == splitMessages.Count - 1) // No need for scroll bar
+                    scrollColor = RLColor.Gray;
+
+                console.Set(Width - 1, ROWS_BEFORE_MESSAGES, upArrowColor, null, (int)FontChars.UP_ARROW);
+                for (int yScroll = ROWS_BEFORE_MESSAGES + 1; yScroll < Height; yScroll++)
+                    console.Set(Width - 1, yScroll, scrollColor, null, '|');
+                console.Set(Width - 1, Height - 1, downArrowColor, null, (int)FontChars.DOWN_ARROW);
+
+
+
+                while (i <= indexOfLastDisplayed)
                 {
                     console.Print(0, y, splitMessages[i], RLColor.White);
                     y++; // Each message is guaranteed to fit on one line because they were split to
@@ -62,6 +86,18 @@ namespace Apprentice
                     Hide();
                     ApprenticeGame.GameScreen.Show();
                     break;
+
+                case InputAction.UP:
+                    e.Cancel = true;
+                    indexOfLastDisplayed--;
+                    UpdateLayout(this, new UpdateEventArgs(0.0));
+                    break;
+
+                case InputAction.DOWN:
+                    e.Cancel = true;
+                    indexOfLastDisplayed++;
+                    UpdateLayout(this, new UpdateEventArgs(0.0));
+                    break;
             }
  
 
@@ -73,7 +109,7 @@ namespace Apprentice
             }
             else if (e.KeyPress.Key == RLKey.B)
             {
-                MessageCenter.Write("This is a 2-line message.  It does not fit on one line because it is really long, and therefore should be automatically split as needed to fit in the message window.");
+                MessageCenter.Write("This is a 3-line message.  It does not fit on one line because it is really long, and therefore should be automatically split as needed to fit in the message window.");
                 e.Cancel = true;
             }
             else if (e.KeyPress.Key == RLKey.C)
@@ -88,8 +124,10 @@ namespace Apprentice
             if (e.WasConsolidated)
                 splitMessages.RemoveAt(splitMessages.Count - 1); // If we consolidated we actually edited the last message.  So remove it so we re-split it.
 
-            foreach (var split in splitMessage(e.Message))
+            foreach (var split in MessageCenter.SplitMessage(e.Message, Width - 1))
                 splitMessages.Add(split);
+
+            indexOfLastDisplayed = splitMessages.Count - 1;
 
             if (Shown)
                 UpdateLayout(this, new UpdateEventArgs(0.0));
@@ -101,37 +139,10 @@ namespace Apprentice
             splitMessages.Clear();
 
             foreach (var message in MessageCenter.Messages)
-                foreach (var split in splitMessage(message))
+                foreach (var split in MessageCenter.SplitMessage(message, Width - 1))
                     splitMessages.Add(split);
+
+            indexOfLastDisplayed = splitMessages.Count - 1;
         }
-
-        // Split based on word if we can find a word, otherwise return an exact split.
-        // TODO: Can make more priorities like hyphens, etc later
-        private IEnumerable<string> splitMessage(string message)
-        {
-            while (message != "")
-            {
-                if (message.Length <= Width)
-                {
-                    yield return message;
-                    break;
-                }
-
-                int widthOfSubstring = Width;
-                int exactWidth = widthOfSubstring;
-
-
-                while (widthOfSubstring >= 0 && message[widthOfSubstring] != ' ')
-                    widthOfSubstring--;
-
-                if (widthOfSubstring == 0) // We couldn't find a word boundary, so arbitrarily take as much as we can find
-                    widthOfSubstring = exactWidth;
-
-                yield return message.Substring(0, widthOfSubstring);
-                message = message.Substring(widthOfSubstring + 1); // Get rid of part we just returned, and add 1 to ignore the space.
-            }
-        }
-
-
     }
 }

@@ -2,13 +2,19 @@
 using Apprentice.World;
 using GoRogue;
 using RLNET;
+using System;
 using WinMan;
 
 namespace Apprentice
 {
-    // Main camera panel in game view -- follows main map, syncs with player, and handles player/main map input.  Also will handle single line message display
+    // Main camera panel in game view -- follows main map, syncs with player, and handles player/main map input.  Also displays messages at the top
     class MainCameraPanel : CameraPanel
     {
+        // TODO: Thus far unused.
+        static private readonly string MORE_SYMBOL = "-- MORE --";
+        static private readonly int MESSAGE_WIDTH = 60;
+
+
         public MainCameraPanel(ResizeCalc rootX, ResizeCalc rootY, ResizeCalc width, ResizeCalc height)
             : base(rootX, rootY, width, height, ApprenticeGame.ActiveMap)
         {

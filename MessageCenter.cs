@@ -45,5 +45,32 @@ namespace Apprentice
             }
             MessageWritten?.Invoke(null, new MessageWrittenEventArgs(_messages[_messages.Count - 1], consolidated)); // Is no sender so we just use null here.
         }
+
+        // Split based on word if we can find a word, otherwise return an exact split.
+        // TODO: Can make more priorities like hyphens, etc later
+        static public IEnumerable<string> SplitMessage(string message, int maxLineLength)
+        {
+            while (message != "")
+            {
+                if (message.Length <= maxLineLength)
+                {
+                    yield return message;
+                    break;
+                }
+
+                int widthOfSubstring = maxLineLength;
+                int exactWidth = widthOfSubstring;
+
+
+                while (widthOfSubstring >= 0 && message[widthOfSubstring] != ' ')
+                    widthOfSubstring--;
+
+                if (widthOfSubstring == 0) // We couldn't find a word boundary, so arbitrarily take as much as we can find
+                    widthOfSubstring = exactWidth;
+
+                yield return message.Substring(0, widthOfSubstring);
+                message = message.Substring(widthOfSubstring + 1); // Get rid of part we just returned, and add 1 to ignore the space.
+            }
+        }
     }
 }
