@@ -10,6 +10,7 @@ namespace Apprentice
     class ApprenticeGame
     {
         static public GameWorld World { get; private set; }
+
         static public GameScreen GameScreen;
         static public SpellsPanel SpellsPanel;
         static public MessageRecallPanel MessageRecallPanel;

@@ -50,29 +50,28 @@ namespace Apprentice
             else
             {
                 int y = ROWS_BEFORE_MESSAGES;
-                int i = indexOfFirstDisplayed;
 
-                // If we can't display all the messages we have, display up arrow white
-                RLColor upArrowColor = (i != 0) ? RLColor.White : RLColor.Gray;
+                // Determine scroll bar colors
+                RLColor upArrowColor = (indexOfFirstDisplayed != 0) ? RLColor.White : RLColor.Gray; // If we can't display all the messages we have, display up arrow white
                 // If we can't display most recent ones, display down arrow white
                 RLColor downArrowColor = (indexOfLastDisplayed != splitMessages.Count - 1) ? RLColor.White : RLColor.Gray;
-
+                // Scroll bar is white unless its unused entirely then its gray, like both arrows
                 RLColor scrollColor = RLColor.White;
-                if (i == 0 && indexOfLastDisplayed == splitMessages.Count - 1) // No need for scroll bar
+                if (indexOfFirstDisplayed == 0 && indexOfLastDisplayed == splitMessages.Count - 1) // No need for scroll bar
                     scrollColor = RLColor.Gray;
 
+                // Print scroll-bar.
                 console.Set(Width - 1, ROWS_BEFORE_MESSAGES, upArrowColor, null, (int)FontChars.UP_ARROW);
                 for (int yScroll = ROWS_BEFORE_MESSAGES + 1; yScroll < Height; yScroll++)
                     console.Set(Width - 1, yScroll, scrollColor, null, '|');
                 console.Set(Width - 1, Height - 1, downArrowColor, null, (int)FontChars.DOWN_ARROW);
 
 
-
-                while (i <= indexOfLastDisplayed)
+                // Print messages
+                for (int i = indexOfFirstDisplayed; i <= indexOfLastDisplayed; i++)
                 {
                     console.Print(0, y, splitMessages[i], RLColor.White);
                     y++; // Each message is guaranteed to fit on one line because they were split to
-                    i++;
                 }
             }
         }
@@ -121,7 +120,7 @@ namespace Apprentice
 
         private void onMessageWritten(object s, MessageWrittenEventArgs e)
         {
-            if (e.WasConsolidated)
+            if (e.WasConsolidated) // Must be at least 1 message already in log
                 splitMessages.RemoveAt(splitMessages.Count - 1); // If we consolidated we actually edited the last message.  So remove it so we re-split it.
 
             foreach (var split in MessageCenter.SplitMessage(e.Message, Width - 1))
