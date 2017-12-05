@@ -127,11 +127,6 @@ namespace Apprentice
                 if (dirToMove != Direction.NONE)
                     if (!ApprenticeGame.Player.MoveIn(dirToMove))
                         ApprenticeGame.Player.Combat.AttackIn(dirToMove);
-
-                if (e.KeyPress.Key == RLKey.A)
-                    MessageCenter.Write("This is a 1-line message.");
-                else if (e.KeyPress.Key == RLKey.B)
-                    MessageCenter.Write("This is a 3-line boove message.  It does not fit on one line because it is really long, and therefore should be automatically split as needed to fit in the message window.");
             }
         }
 

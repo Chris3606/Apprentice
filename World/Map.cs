@@ -123,11 +123,13 @@ namespace Apprentice.World
 
         public void CalculateFOVIfNeeded(Coord position, int radius, Radius radiusShape)
         {
+            // TODO: Centralize choice of FOV
             if (FOVNeedsRecalc)
             {
                 FOVNeedsRecalc = false;
                 losAreaProvider.Center = position;
                 losAreaProvider.Radius = radius; // Library automatically checks if this actually changed before doing anything, pre-emptive set ok here
+                losAreaProvider.RadiusShape = radiusShape;
                 fov.Calculate(position.X, position.Y, radius, radiusShape);
 
                 // For everything in FOV, it's explored.

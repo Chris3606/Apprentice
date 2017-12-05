@@ -98,24 +98,6 @@ namespace Apprentice
                     UpdateLayout(this, new UpdateEventArgs(0.0));
                     break;
             }
- 
-
-            // TODO: Temp, Test messages
-            if (e.KeyPress.Key == RLKey.A)
-            {
-                MessageCenter.Write("This is an alternative message!");
-                e.Cancel = true;
-            }
-            else if (e.KeyPress.Key == RLKey.B)
-            {
-                MessageCenter.Write("This is a 3-line message.  It does not fit on one line because it is really long, and therefore should be automatically split as needed to fit in the message window.");
-                e.Cancel = true;
-            }
-            else if (e.KeyPress.Key == RLKey.C)
-            {
-                MessageCenter.Write("This is a secondarily alternative message.");
-                e.Cancel = true;
-            }
         }
 
         private void onMessageWritten(object s, MessageWrittenEventArgs e)
