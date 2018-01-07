@@ -87,7 +87,6 @@ namespace Apprentice
                                 ApprenticeGame.Player.EnemiesSeen++;
                             }
                     }
-
                 }
 
             }

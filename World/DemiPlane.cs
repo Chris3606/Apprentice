@@ -1,5 +1,5 @@
 ﻿using GoRogue;
-using GoRogue.MapGeneration;
+using GoRogue.MapGeneration.Generators;
 using Apprentice.GameObjects.Terrain;
 
 namespace Apprentice.World
@@ -14,7 +14,7 @@ namespace Apprentice.World
         public sealed override void Generate()
         {
             var terrainGen = new ArrayMapOf<bool>(Width, Height);
-            new RectangleMapGenerator(terrainGen).Generate();
+            RectangleMapGenerator.Generate(terrainGen);
 
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)

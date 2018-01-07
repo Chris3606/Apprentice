@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GoRogue, Version=0.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\GoRogue.0.5.1\lib\net461\GoRogue.dll</HintPath>
+    <Reference Include="GoRogue, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\GoRogue.0.9.0\lib\netstandard2.0\GoRogue.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
@@ -81,6 +81,7 @@
     <Compile Include="Spells\GateHome.cs" />
     <Compile Include="Spells\Spell.cs" />
     <Compile Include="World\CaveofLearning.cs" />
+    <Compile Include="World\Chunk.cs" />
     <Compile Include="World\DemiPlane.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Terrain\Floor.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="GameObjects\Teleporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World\GameWorld.cs" />
+    <Compile Include="World\NewMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
